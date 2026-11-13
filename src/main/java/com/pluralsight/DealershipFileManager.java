@@ -5,10 +5,10 @@ import java.math.BigDecimal;
 
 public class DealershipFileManager {
 
-
     public static Dealership getDealership() {
 
-Dealership dealership = null;
+
+        Dealership dealership = null;
 
         try(BufferedReader reader = new BufferedReader(new FileReader("inventory.csv"))) {
 
@@ -50,7 +50,7 @@ Dealership dealership = null;
             System.out.println("Something went wrong");
         }
 
-
+        return null;
     }
 
 
