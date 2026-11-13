@@ -92,8 +92,10 @@ public class UserInterface {
     public static void processGetByVehicleTypeRequest() {
 
     }
-    public static void processGetAllVehiclesRequest() {
+    private void processGetAllVehiclesRequest() {
+        List<Vehicle> vehicles = dealership.getAllVehicles();
 
+        displayVehicles(vehicles);
     }
 
     public static void processAddVehicleRequest() {
