@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class UserInterface {
@@ -9,15 +10,14 @@ public class UserInterface {
         public UserInterface() {
     }
 
-    private void innit() {
-        DealershipFileManager fileManager = new DealershipFileManager();
+    private void init() {
         this.dealership = DealershipFileManager.getDealership();
     }
 
 
-    public static void display() {
+    public void display() {
         int choice;
-
+        init();
 
 
         do {
@@ -72,24 +72,78 @@ public class UserInterface {
         }
     }
 
-    public static void processGetbyPriceRequest() {
+    public  void processGetbyPriceRequest() {
+        BigDecimal min = Console.promptForBigDecimal(
+                "Enter minimum price: ");
+
+        BigDecimal max = Console.promptForBigDecimal(
+                "Enter maximum price: ");
+
+        List<Vehicle> vehicles =
+                dealership.getVehiclesByPrice(min, max);
+
+        displayVehicles(vehicles);
+    }
+
+    public void processGetByMakeModelRequest() {
+        String make = Console.promptForString(
+                "Enter vehicle make: ");
+
+        String model = Console.promptForString(
+                "Enter vehicle model: ");
+
+        List<Vehicle> vehicles =
+                dealership.getVehiclesByMakeModel(make, model);
+
+        displayVehicles(vehicles);
 
     }
 
-    public static void processGetByMakeModelRequest() {
+    public void processGetByYearRequest() {
+        int min = Console.promptForInt(
+                "Enter minimum year: ");
+
+        int max = Console.promptForInt(
+                "Enter maximum year: ");
+
+        List<Vehicle> vehicles =
+                dealership.getVehiclesByYear(min, max);
+
+        displayVehicles(vehicles);
 
     }
+    public void processGetByColorRequest() {
+        String color = Console.promptForString(
+                "Enter vehicle color: ");
 
-    public static void processGetByYearRequest() {
+        List<Vehicle> vehicles =
+                dealership.getVehiclesByColor(color);
+
+        displayVehicles(vehicles);
 
     }
-    public static void processGetByColorRequest() {
+    public void processGetByMileageRequest() {
+        int min = Console.promptForInt(
+                "Enter minimum mileage: ");
+
+        int max = Console.promptForInt(
+                "Enter maximum mileage: ");
+
+        List<Vehicle> vehicles =
+                dealership.getVehiclesByMileage(min, max);
+
+        displayVehicles(vehicles);
 
     }
-    public static void processGetByMileageRequest() {
+    public void processGetByVehicleTypeRequest() {
+        String vehicleType = Console.promptForString(
+                "Enter vehicle type (car, truck, SUV, van): ");
 
-    }
-    public static void processGetByVehicleTypeRequest() {
+        List<Vehicle> vehicles =
+                dealership.getVehiclesByType(vehicleType);
+
+        displayVehicles(vehicles);
+
 
     }
     private void processGetAllVehiclesRequest() {
@@ -98,12 +152,73 @@ public class UserInterface {
         displayVehicles(vehicles);
     }
 
-    public static void processAddVehicleRequest() {
+    public void processAddVehicleRequest() {
+        System.out.println("Enter vehicle information:");
+
+        int vin = Console.promptForInt("VIN: ");
+
+        int year = Console.promptForInt("Year: ");
+
+        String make = Console.promptForString("Make: ");
+
+        String model = Console.promptForString("Model: ");
+
+        String vehicleType = Console.promptForString(
+                "Vehicle type: ");
+
+        String color = Console.promptForString("Color: ");
+
+        int odometer = Console.promptForInt("Odometer: ");
+
+        BigDecimal price = Console.promptForBigDecimal(
+                "Price: ");
+
+        Vehicle vehicle = new Vehicle(
+                vin,
+                year,
+                make,
+                model,
+                vehicleType,
+                color,
+                odometer,
+                price
+        );
+
+        dealership.addVehicle(vehicle);
+
+        DealershipFileManager.saveDealership(dealership);
+
+        System.out.println("Vehicle successfully added!");
+    }
+
+
+    public void processRemoveVehicleRequest() {
+        int vin = Console.promptForInt(
+                "Enter VIN of vehicle to remove: ");
+
+        Vehicle vehicleToRemove = null;
+
+        for (Vehicle vehicle : dealership.getAllVehicles()) {
+
+            if (vehicle.getVin() == vin) {
+                vehicleToRemove = vehicle;
+                break;
+            }
+        }
+
+        if (vehicleToRemove != null) {
+
+            dealership.removeVehicle(vehicleToRemove);
+
+            DealershipFileManager.saveDealership(dealership);
+
+            System.out.println("Vehicle successfully removed!");
+
+        } else {
+
+            System.out.println("Vehicle not found.");
+
+        }
 
     }
-    public static void processRemoveVehicleRequest() {
-
-    }
-
-
 }

@@ -1,6 +1,7 @@
 
 package com.pluralsight;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 
@@ -58,4 +59,18 @@ public class Console {
             }
         }
     }
+
+
+    public static BigDecimal promptForBigDecimal(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+
+            try {
+                return new BigDecimal(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Enter a valid amount.");
+            }
+        }
+    }
+
 }
